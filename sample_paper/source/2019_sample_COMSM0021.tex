@@ -3,8 +3,8 @@
 \usepackage{amsmath,amsfonts,amssymb}   
 
 \newif\ifanswer
-%\answertrue
-\answerfalse
+\answertrue
+%\answerfalse
 
 \let\imp=\Rightarrow
 \let\iff=\Leftrightarrow
@@ -180,11 +180,15 @@ before rising more slowly to one. [1 mark for starting at 0.5 and rising to 1, t
   \end{eqnarray}
   then $p_{X|H}(x|h)p_{Y|H}(y|h)$ is proportional to a normal distribution in $h$. What is that normal distribution?
  
-  \ifanswer \textbf{Answer}:\\  Well this is just an exercise in matching terms, with the obvious notation:
+  \ifanswer \textbf{Answer}:\\  Well this is just an exercise in matching terms, with the obvious notation, you are told the multiple of the normal distributions is proportional to a normal distribution, hence
+  \begin{equation}
+    \exp[-\frac{(h-\mu)^2}{\sigma^2}=C \exp[-\frac{(x-h)^2}{\sigma_X^2}]    \exp[\frac{-(y-h)^2}{\sigma_Y^2}]
+  \end{equation}
+  where $C$ is some constant there because the relationship is a proportional one. Then taking the log of both sides and using the fact that this relationship is true for all $h$ to drop the constant terms we get 
   \begin{equation}
     \frac{1}{\sigma^2}(h^2-2h\mu)=\frac{1}{\sigma_X^2}(h^2-2hx)+\frac{1}{\sigma_Y^2}(h^2-2hy)
   \end{equation}
-  so
+  so matching the coefficients of the $h$ terms and of the $h^2$ terms we get
   \begin{equation}
     \frac{1}{\sigma^2}=\frac{1}{\sigma_X^2}+\frac{1}{\sigma_Y^2}
   \end{equation}
@@ -201,11 +205,19 @@ before rising more slowly to one. [1 mark for starting at 0.5 and rising to 1, t
   object with noise drawn from $\mathcal{N}(0,\sigma^2_s)$. Derive the
   Kalman gain for optimally estimating the position of the object.
 
-  \ifanswer \textbf{Answer}:\\ Let $h(t)$ be the estimated position with uncertainty
-  $\sigma_h^2(t)$, after $\delta t$ the dead reckoning estimate is
-  $d=h+v\delta t$ with uncertainty given by variance
-  $\sigma_d^2=\sigma_h^2+\sigma_s^2$. Then we do Bayesian fusion to calculate the new estimated position
- 
+  \ifanswer \textbf{Answer}:\\ Let $h(t)$ be the estimated position
+  with uncertainty $\sigma_h^2(t)$ at time $t$. After another $\delta
+  t$ the dead reckoning estimate is $d=h(t)+v\delta t$; that is, we
+  have an estimate for the position at $t$, the dead reckoning
+  estimate is our estimate for the position at $t+\delta t$ based on
+  our original estimate and the motion. This has uncertainty given by
+  variance $\sigma_d^2=\sigma_h^2(t)+\sigma_s^2$: this is the sum of
+  the original uncertainty in the estimate and the extra uncertainty
+  that derives from the noise in the motion.
+
+  Then we do Bayesian fusion to calculate the new estimated position;
+  this fuses the estimate from dead reckoning and the estimate based
+  on the sensor; each with its own noise.
   \begin{equation}
     h(t+\delta t)=\frac{\sigma_h^2(t+\delta t)}{\sigma_d^2} d+\frac{\sigma_h^2(t+\delta t)}{\sigma_s^2} s
   \end{equation}
